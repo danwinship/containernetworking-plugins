@@ -18,9 +18,12 @@ WORKDIR /
 FROM registry.ci.openshift.org/ocp/4.21:base-rhel9
 RUN mkdir -p /usr/src/plugins/bin && \
     mkdir -p /usr/src/plugins/rhel9/bin && \
+    mkdir -p /usr/src/plugins/rhel10/bin && \
     mkdir -p /usr/src/plugins/windows/bin
 COPY --from=rhel9 /usr/src/plugins/bin/* /usr/src/plugins/bin/
 RUN ln /usr/src/plugins/bin/* /usr/src/plugins/rhel9/bin/
+# For now assume rhel9 binaries are compatible with rhel10
+RUN ln /usr/src/plugins/bin/* /usr/src/plugins/rhel10/bin/
 COPY --from=windows /usr/src/plugins/bin/* /usr/src/plugins/windows/bin/
 
 LABEL io.k8s.display-name="Container Networking Plugins" \
